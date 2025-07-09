@@ -174,9 +174,7 @@ let ReportsService = class ReportsService {
     }
     async getPublicStats() {
         const totalReports = await this.prisma.report.count();
-        const totalUsers = await this.prisma.user.count({
-            where: { isBlocked: false },
-        });
+        const totalUsers = await this.prisma.user.count();
         return {
             totalReports,
             totalUsers,

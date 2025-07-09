@@ -65,7 +65,7 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async update(
     @Param('id') id: string,
-    @Body() updateUserDto: { name?: string; isBlocked?: boolean },
+    @Body() updateUserDto: { name?: string },
   ) {
     return this.usersService.update(id, updateUserDto);
   }
@@ -85,5 +85,32 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async remove(@Param('id') id: string) {
     return this.usersService.delete(id);
+  }
+
+  @Patch(':id/block')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Block user (admin only)' })
+  @ApiResponse({ status: 200, description: 'User blocked successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async blockUser(@Param('id') id: string) {
+    return this.usersService.blockUser(id);
+  }
+
+  @Patch(':id/unblock')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Unblock user (admin only)' })
+  @ApiResponse({ status: 200, description: 'User unblocked successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async unblockUser(@Param('id') id: string) {
+    return this.usersService.unblockUser(id);
+  }
+
+  @Patch(':id/toggle-block')
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Toggle user block status (admin only)' })
+  @ApiResponse({ status: 200, description: 'User block status toggled successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async toggleBlockUser(@Param('id') id: string) {
+    return this.usersService.toggleBlockUser(id);
   }
 } 

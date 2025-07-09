@@ -14,6 +14,10 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
+      // Check if user is blocked
+      if (user.isBlocked) {
+        throw new UnauthorizedException('User account is blocked');
+      }
       const { password, ...result } = user;
       return result;
     }

@@ -58,7 +58,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, data: { name?: string; isBlocked?: boolean }) {
+  async update(id: string, data: { name?: string }) {
     const user = await this.prisma.user.update({
       where: { id },
       data,
@@ -138,6 +138,47 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async blockUser(id: string) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { isBlocked: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async unblockUser(id: string) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { isBlocked: false },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async toggleBlockUser(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: { isBlocked: !user.isBlocked },
+    });
   }
 } 
  
