@@ -9,38 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtStrategy = void 0;
-const passport_jwt_1 = require("passport-jwt");
-const passport_1 = require("@nestjs/passport");
+exports.BlockedUserGuard = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("../../users/users.service");
-let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+let BlockedUserGuard = class BlockedUserGuard {
     constructor(usersService) {
-        super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'your-super-secret-key-change-in-production',
-        });
         this.usersService = usersService;
     }
-    async validate(payload) {
-        const user = await this.usersService.findById(payload.sub);
+    async canActivate(context) {
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
         if (!user) {
-            throw new common_1.UnauthorizedException('User not found');
+            throw new common_1.UnauthorizedException('User not authenticated');
         }
-        if (user.isBlocked) {
+        const currentUser = await this.usersService.findById(user.id);
+        if (currentUser.isBlocked) {
             throw new common_1.UnauthorizedException('User account is blocked');
         }
-        return {
-            id: payload.sub,
-            email: payload.email,
-            role: user.role,
-        };
+        return true;
     }
 };
-exports.JwtStrategy = JwtStrategy;
-exports.JwtStrategy = JwtStrategy = __decorate([
+exports.BlockedUserGuard = BlockedUserGuard;
+exports.BlockedUserGuard = BlockedUserGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService])
-], JwtStrategy);
-//# sourceMappingURL=jwt.strategy.js.map
+], BlockedUserGuard);
+//# sourceMappingURL=blocked-user.guard.js.map

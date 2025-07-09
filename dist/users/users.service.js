@@ -114,6 +114,38 @@ let UsersService = class UsersService {
         }
         return user;
     }
+    async blockUser(id) {
+        const user = await this.prisma.user.update({
+            where: { id },
+            data: { isBlocked: true },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return user;
+    }
+    async unblockUser(id) {
+        const user = await this.prisma.user.update({
+            where: { id },
+            data: { isBlocked: false },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return user;
+    }
+    async toggleBlockUser(id) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return this.prisma.user.update({
+            where: { id },
+            data: { isBlocked: !user.isBlocked },
+        });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

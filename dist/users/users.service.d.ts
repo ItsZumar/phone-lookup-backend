@@ -50,7 +50,6 @@ export declare class UsersService {
     }>;
     update(id: string, data: {
         name?: string;
-        isBlocked?: boolean;
     }): Promise<{
         id: string;
         email: string;
@@ -94,6 +93,36 @@ export declare class UsersService {
         updatedAt: Date;
     }>;
     updatePassword(id: string, hashedPassword: string): Promise<{
+        id: string;
+        email: string;
+        password: string;
+        name: string;
+        role: import("generated/prisma").$Enums.Role;
+        isBlocked: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    blockUser(id: string): Promise<{
+        id: string;
+        email: string;
+        password: string;
+        name: string;
+        role: import("generated/prisma").$Enums.Role;
+        isBlocked: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    unblockUser(id: string): Promise<{
+        id: string;
+        email: string;
+        password: string;
+        name: string;
+        role: import("generated/prisma").$Enums.Role;
+        isBlocked: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    toggleBlockUser(id: string): Promise<{
         id: string;
         email: string;
         password: string;

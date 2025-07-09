@@ -45,6 +45,15 @@ let UsersController = class UsersController {
     async remove(id) {
         return this.usersService.delete(id);
     }
+    async blockUser(id) {
+        return this.usersService.blockUser(id);
+    }
+    async unblockUser(id) {
+        return this.usersService.unblockUser(id);
+    }
+    async toggleBlockUser(id) {
+        return this.usersService.toggleBlockUser(id);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -120,6 +129,39 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Patch)(':id/block'),
+    (0, roles_decorator_1.Roles)(types_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: 'Block user (admin only)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'User blocked successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "blockUser", null);
+__decorate([
+    (0, common_1.Patch)(':id/unblock'),
+    (0, roles_decorator_1.Roles)(types_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: 'Unblock user (admin only)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'User unblocked successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "unblockUser", null);
+__decorate([
+    (0, common_1.Patch)(':id/toggle-block'),
+    (0, roles_decorator_1.Roles)(types_1.Role.ADMIN),
+    (0, swagger_1.ApiOperation)({ summary: 'Toggle user block status (admin only)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'User block status toggled successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "toggleBlockUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, swagger_1.ApiTags)('users'),
     (0, swagger_1.ApiBearerAuth)(),
